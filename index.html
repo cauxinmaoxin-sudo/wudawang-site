@@ -14,9 +14,9 @@
       height: 100vh;
       margin: 0;
       font-family: 'Ma Shan Zheng', Arial, sans-serif;
-      background-color: #F5E8C7; /* 暖黄色，温暖道歉氛围 */
+      background-color: #F5E8C7;
       position: relative;
-      overflow: hidden; /* 防止飘动文字溢出 */
+      overflow: hidden;
     }
     .stitch-lilo {
       width: 320px;
@@ -25,18 +25,19 @@
       transition: transform 0.3s ease;
       z-index: 1;
       opacity: 0.9;
+      position: relative;
     }
     .stitch-lilo.jump {
       transform: translateY(-20px) scale(1.1);
     }
     h1 {
       font-size: 3em;
-      color: #D9534F; /* 柔和红色，象征歉意 */
+      color: #D9534F;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      background: rgba(255, 182, 193, 0.8); /* 浅粉色半透明 */
+      background: rgba(255, 182, 193, 0.8);
       padding: 15px 30px;
       border-radius: 20px;
-      animation: continuousSwing 6s ease-in-out infinite; /* 持续摆动，6秒一循环 */
+      animation: continuousSwing 4s linear infinite;
       z-index: 2;
       margin-bottom: 10px;
     }
@@ -49,13 +50,13 @@
     }
     .apology-text {
       font-size: 1.5em;
-      color: #8B4513; /* 深棕色，诚恳感 */
+      color: #8B4513;
       text-align: center;
       margin-top: 10px;
       padding: 10px 20px;
-      background: rgba(255, 245, 238, 0.7); /* 米色半透明 */
+      background: rgba(255, 245, 238, 0.7);
       border-radius: 10px;
-      transition: opacity 0.3s; /* 平滑替换效果 */
+      transition: opacity 0.3s;
     }
     .sorry-button {
       margin-top: 15px;
@@ -73,18 +74,28 @@
     }
     .floating-text {
       position: absolute;
-      font-size: 3.2em;
+      font-size: 1.5em;
       color: #D9534F;
       opacity: 0.7;
-      animation: float 1s linear infinite;
-      user-select: none; /* 防止选中 */
+      user-select: none;
     }
-    @keyframes float {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(50vw, 50vh) rotate(20deg); }
-      50% { transform: translate(100vw, 0) rotate(0deg); }
-      75% { transform: translate(50vw, -50vh) rotate(-20deg); }
-      100% { transform: translate(0, 0) rotate(0deg); }
+    .whip {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 50px;
+      background: #000;
+      z-index: 3;
+      opacity: 0;
+      transform-origin: top;
+      animation: whipStrike 0.5s ease-out forwards;
+    }
+    @keyframes whipStrike {
+      0% { transform: translateX(-50%) rotate(0deg); opacity: 0; }
+      50% { transform: translateX(-50%) rotate(-45deg); opacity: 1; }
+      100% { transform: translateX(-50%) rotate(0deg); opacity: 0; }
     }
     @media (max-width: 600px) {
       h1 {
@@ -103,7 +114,7 @@
         padding: 8px 15px;
       }
       .floating-text {
-        font-size: 1em;
+        font-size: 1.2em;
       }
     }
   </style>
@@ -129,26 +140,49 @@
       ];
       const randomIndex = Math.floor(Math.random() * apologies.length);
       const apologyText = document.querySelector('.apology-text');
-      apologyText.textContent = apologies[randomIndex]; /* 直接替换文字 */
+      apologyText.textContent = apologies[randomIndex];
       const stitch = document.querySelector('.stitch-lilo');
       stitch.classList.add('jump');
-      setTimeout(() => stitch.classList.remove('jump'), 300);
+      // 添加鞭子动画
+      const whip = document.createElement('div');
+      whip.className = 'whip';
+      document.body.appendChild(whip);
+      setTimeout(() => {
+        document.body.removeChild(whip);
+        stitch.classList.remove('jump');
+      }, 500);
     }
-    // 添加飘动文字
+    // 立即生成随机飘动文字
     function createFloatingText() {
-      for (let i = 0; i < 50; i++) { // 创建10个“我错了”文字
+      for (let i = 0; i < 20; i++) {
         const text = document.createElement('div');
         text.className = 'floating-text';
-        text.textContent = '我错了！';
-        text.style.left = Math.random() * 100 + 'vw';
-        text.style.top = Math.random() * 100 + 'vh';
-        text.style.animationDelay = Math.random() * 5 + 's'; // 随机延迟
+        text.textContent = '我错了';
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 100;
+        const endX = Math.random() * 100;
+        const endY = Math.random() * 100;
+        const duration = 8 + Math.random() * 4; // 8-12秒随机持续时间
+        text.style.left = startX + 'vw';
+        text.style.top = startY + 'vh';
+        text.style.animation = `float ${duration}s linear infinite`;
+        // 内联样式替代 keyframes
+        text.style.setProperty('--move-x', `${endX - startX}vw`);
+        text.style.setProperty('--move-y', `${endY - startY}vh`);
+        text.style.setProperty('--rotate', `${(Math.random() - 0.5) * 60}deg`);
         document.body.appendChild(text);
       }
     }
-    window.onload = createFloatingText; // 页面加载时生成
+    createFloatingText();
+    // 动态添加通用的 float 动画
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes float {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(var(--move-x), var(--move-y)) rotate(var(--rotate)); }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
-
-
