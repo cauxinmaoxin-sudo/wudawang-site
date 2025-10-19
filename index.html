@@ -14,7 +14,7 @@
       height: 100vh;
       margin: 0;
       font-family: 'Ma Shan Zheng', Arial, sans-serif;
-      background-color: #87CEEB; /* 浅蓝色背景，备用 */
+      background-color: #F5E8C7; /* 暖黄色，温暖道歉氛围 */
       position: relative;
     }
     .stitch-lilo {
@@ -23,25 +23,51 @@
       cursor: pointer;
       transition: transform 0.3s ease;
       z-index: 1;
+      opacity: 0.9;
     }
     .stitch-lilo.jump {
-      transform: translateY(-20px) scale(1.1); /* 跳跃 + 放大 */
+      transform: translateY(-20px) scale(1.1);
     }
     h1 {
-      font-size: 3.5em;
-      color: #fff;
-      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
-      background: rgba(0, 172, 255, 0.8); /* 史迪奇蓝色半透明 */
+      font-size: 3em;
+      color: #D9534F; /* 柔和红色，象征歉意 */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 182, 193, 0.8); /* 浅粉色半透明 */
       padding: 15px 30px;
       border-radius: 20px;
       animation: pulseAndRotate 3s ease-in-out infinite;
       z-index: 2;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     @keyframes pulseAndRotate {
-      0% { transform: scale(1) rotate(0deg); color: #fff; }
-      50% { transform: scale(1.1) rotate(8deg); color: #ffeb3b; }
-      100% { transform: scale(1) rotate(0deg); color: #fff; }
+      0% { transform: scale(1) rotate(0deg); color: #D9534F; }
+      25% { transform: scale(1.1) rotate(6deg); color: #FFD700; } /* 正向旋转 */
+      50% { transform: scale(1.1) rotate(-6deg); color: #FFD700; } /* 反向旋转 */
+      75% { transform: scale(1) rotate(0deg); color: #D9534F; }
+      100% { transform: scale(1) rotate(0deg); color: #D9534F; }
+    }
+    .apology-text {
+      font-size: 1.5em;
+      color: #8B4513; /* 深棕色，诚恳感 */
+      text-align: center;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: rgba(255, 245, 238, 0.7); /* 米色半透明 */
+      border-radius: 10px;
+    }
+    .sorry-button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      color: #fff;
+      background-color: #D9534F;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .sorry-button:hover {
+      background-color: #C9302C;
     }
     @media (max-width: 600px) {
       h1 {
@@ -51,14 +77,38 @@
       .stitch-lilo {
         width: 220px;
       }
+      .apology-text {
+        font-size: 1.2em;
+        padding: 8px 15px;
+      }
+      .sorry-button {
+        font-size: 1em;
+        padding: 8px 15px;
+      }
     }
   </style>
 </head>
 <body>
   <h1>吴大王，开心每一天！</h1>
   <img class="stitch-lilo" src="./stitch_lilo.png" alt="Stitch and Lilo" onclick="jump()">
+  <div class="apology-text">吴大王，我错了，真心向你道歉！因为我骂了你，我很后悔，愿你每天开心！</div>
+  <button class="sorry-button" onclick="showExtraApology()">再道一次歉！</button>
   <script>
     function jump() {
+      const stitch = document.querySelector('.stitch-lilo');
+      stitch.classList.add('jump');
+      setTimeout(() => stitch.classList.remove('jump'), 300);
+    }
+    function showExtraApology() {
+      const apologies = [
+        "吴大王，对不起！我骂了你，真是我的错，求你原谅我！",
+        "I'm so sorry, Wu Dawang! I shouldn’t have said those harsh words, forgive me please!",
+        "吴大王，ごめんなさい！怒鳴ってしまって、本当に申し訳ありません。許してください！",
+        "Wu Dawang, lo siento mucho! Scolding you was a mistake, I hope you can forgive me!",
+        "吴大王，我知道骂你不对，我会改的，求你给我一个机会！"
+      ];
+      const randomIndex = Math.floor(Math.random() * apologies.length);
+      alert(apologies[randomIndex]);
       const stitch = document.querySelector('.stitch-lilo');
       stitch.classList.add('jump');
       setTimeout(() => stitch.classList.remove('jump'), 300);
