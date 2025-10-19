@@ -73,10 +73,10 @@
     }
     .floating-text {
       position: absolute;
-      font-size: 1.2em;
+      font-size: 5.2em;
       color: #D9534F;
       opacity: 0.7;
-      animation: float 10s linear infinite;
+      animation: float 1s linear infinite;
       user-select: none; /* 防止选中 */
     }
     @keyframes float {
@@ -136,13 +136,13 @@
     }
     // 添加飘动文字
     function createFloatingText() {
-      for (let i = 0; i < 10; i++) { // 创建10个“我错了”文字
+      for (let i = 0; i < 100; i++) { // 创建10个“我错了”文字
         const text = document.createElement('div');
         text.className = 'floating-text';
-        text.textContent = '我错了';
+        text.textContent = '我错了！';
         text.style.left = Math.random() * 100 + 'vw';
         text.style.top = Math.random() * 100 + 'vh';
-        text.style.animationDelay = Math.random() * 10 + 's'; // 随机延迟
+        text.style.animationDelay = Math.random() * 1 + 's'; // 随机延迟
         document.body.appendChild(text);
       }
     }
