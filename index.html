@@ -16,6 +16,7 @@
       font-family: 'Ma Shan Zheng', Arial, sans-serif;
       background-color: #F5E8C7; /* 暖黄色，温暖道歉氛围 */
       position: relative;
+      overflow: hidden; /* 防止飘动文字溢出 */
     }
     .stitch-lilo {
       width: 320px;
@@ -35,15 +36,15 @@
       background: rgba(255, 182, 193, 0.8); /* 浅粉色半透明 */
       padding: 15px 30px;
       border-radius: 20px;
-      animation: pulseAndRotate 3s ease-in-out infinite;
+      animation: continuousSwing 6s ease-in-out infinite; /* 持续摆动，6秒一循环 */
       z-index: 2;
       margin-bottom: 10px;
     }
-    @keyframes pulseAndRotate {
+    @keyframes continuousSwing {
       0% { transform: scale(1) rotate(0deg); color: #D9534F; }
-      25% { transform: scale(1.1) rotate(6deg); color: #FFD700; } /* 正向旋转 */
-      50% { transform: scale(1.1) rotate(-6deg); color: #FFD700; } /* 反向旋转 */
-      75% { transform: scale(1) rotate(0deg); color: #D9534F; }
+      25% { transform: scale(1.1) rotate(6deg); color: #FFD700; }
+      50% { transform: scale(1.1) rotate(-6deg); color: #FFD700; }
+      75% { transform: scale(1) rotate(6deg); color: #D9534F; }
       100% { transform: scale(1) rotate(0deg); color: #D9534F; }
     }
     .apology-text {
@@ -54,6 +55,7 @@
       padding: 10px 20px;
       background: rgba(255, 245, 238, 0.7); /* 米色半透明 */
       border-radius: 10px;
+      transition: opacity 0.3s; /* 平滑替换效果 */
     }
     .sorry-button {
       margin-top: 15px;
@@ -68,6 +70,21 @@
     }
     .sorry-button:hover {
       background-color: #C9302C;
+    }
+    .floating-text {
+      position: absolute;
+      font-size: 1.2em;
+      color: #D9534F;
+      opacity: 0.7;
+      animation: float 10s linear infinite;
+      user-select: none; /* 防止选中 */
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(50vw, 50vh) rotate(20deg); }
+      50% { transform: translate(100vw, 0) rotate(0deg); }
+      75% { transform: translate(50vw, -50vh) rotate(-20deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
     }
     @media (max-width: 600px) {
       h1 {
@@ -84,6 +101,9 @@
       .sorry-button {
         font-size: 1em;
         padding: 8px 15px;
+      }
+      .floating-text {
+        font-size: 1em;
       }
     }
   </style>
@@ -108,11 +128,25 @@
         "吴大王，我知道骂你不对，我会改的，求你给我一个机会！"
       ];
       const randomIndex = Math.floor(Math.random() * apologies.length);
-      alert(apologies[randomIndex]);
+      const apologyText = document.querySelector('.apology-text');
+      apologyText.textContent = apologies[randomIndex]; /* 直接替换文字 */
       const stitch = document.querySelector('.stitch-lilo');
       stitch.classList.add('jump');
       setTimeout(() => stitch.classList.remove('jump'), 300);
     }
+    // 添加飘动文字
+    function createFloatingText() {
+      for (let i = 0; i < 10; i++) { // 创建10个“我错了”文字
+        const text = document.createElement('div');
+        text.className = 'floating-text';
+        text.textContent = '我错了';
+        text.style.left = Math.random() * 100 + 'vw';
+        text.style.top = Math.random() * 100 + 'vh';
+        text.style.animationDelay = Math.random() * 10 + 's'; // 随机延迟
+        document.body.appendChild(text);
+      }
+    }
+    window.onload = createFloatingText; // 页面加载时生成
   </script>
 </body>
 </html>
