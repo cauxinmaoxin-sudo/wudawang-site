@@ -4,23 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>吴大王，开心每一天！</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
   <style>
     body {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+      font-family: 'Ma Shan Zheng', Arial, sans-serif;
+      background-color: #87CEEB; /* 浅蓝色背景，备用 */
+      position: relative;
+    }
+    .stitch-lilo {
+      width: 320px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+    .stitch-lilo.jump {
+      transform: translateY(-20px) scale(1.1); /* 跳跃 + 放大 */
     }
     h1 {
-      font-size: 2.5em;
-      color: #333;
+      font-size: 3.5em;
+      color: #fff;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+      background: rgba(0, 172, 255, 0.8); /* 史迪奇蓝色半透明 */
+      padding: 15px 30px;
+      border-radius: 20px;
+      animation: pulseAndRotate 3s ease-in-out infinite;
+      z-index: 2;
+      margin-bottom: 20px;
+    }
+    @keyframes pulseAndRotate {
+      0% { transform: scale(1) rotate(0deg); color: #fff; }
+      50% { transform: scale(1.1) rotate(8deg); color: #ffeb3b; }
+      100% { transform: scale(1) rotate(0deg); color: #fff; }
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2em;
+        padding: 10px 20px;
+      }
+      .stitch-lilo {
+        width: 220px;
+      }
     }
   </style>
 </head>
 <body>
   <h1>吴大王，开心每一天！</h1>
+  <img class="stitch-lilo" src="./stitch_lilo.png" alt="Stitch and Lilo" onclick="jump()">
+  <script>
+    function jump() {
+      const stitch = document.querySelector('.stitch-lilo');
+      stitch.classList.add('jump');
+      setTimeout(() => stitch.classList.remove('jump'), 300);
+    }
+  </script>
 </body>
 </html>
